@@ -304,11 +304,11 @@ const initMap = () => {
     ],
   });
 
-  new google.maps.Marker({
-    position: { lat: 25.04550058100967, lng: 121.54846088465462 },
-    map,
-    icon: "/Icon.svg",
-  });
+  // new google.maps.Marker({
+  //   position: { lat: 25.04550058100967, lng: 121.54846088465462 },
+  //   map,
+  //   // icon: "/Icon.svg",
+  // });
 
   // 使用者定位
   if (navigator.geolocation) {

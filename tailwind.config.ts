@@ -14,6 +14,7 @@ const config: Config = {
         colors: {
             "primary": "#6DBD6A",
             "light-txt": "#ffffff",
+            "dark-txt": "#4D4D4D",
         }
     },
   },
