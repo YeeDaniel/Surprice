@@ -10,7 +10,12 @@ const config: Config = {
     './nuxt.config.{js,ts}',
   ],
   theme: {
-    extend: {},
+    extend: {
+        colors: {
+            "primary": "#6DBD6A",
+            "light-txt": "#ffffff",
+        }
+    },
   },
   plugins: [],
 }
