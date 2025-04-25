@@ -7,6 +7,43 @@
       <div id="map" class="w-full flex-1"></div>
       <div id="output"></div>
 
+      <!-- 搜尋欄 + 篩選按鈕 -->
+      <div class="absolute top-2 left-4 right-4 z-20 flex items-center gap-2">
+        <!-- 搜尋框 -->
+        <div
+          class="flex flex-1 items-center rounded-full bg-white px-4 py-2 shadow-md"
+        >
+          <svg
+            class="h-5 w-5 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z"
+            />
+          </svg>
+          <input
+            v-model="searchText"
+            type="text"
+            placeholder="搜尋地區／店家／品項"
+            class="ml-2 flex-1 border-none bg-transparent text-sm text-gray-700 focus:outline-none"
+          />
+        </div>
+
+        <!-- 篩選按鈕 -->
+
+        <img
+          @click="toggleFilter"
+          class="cursor-pointer w-10 h-10"
+          src="/SelectIcon.svg"
+          alt="Select Icon"
+        />
+      </div>
+
       <!-- 💡 這個 absolute 區塊現在是參照上面容器的寬度 -->
 
       <div
@@ -47,114 +84,73 @@
           </div> -->
         <!-- ✅ loading結束：顯示成功訊息 or 其他內容 -->
       </div>
+    </div>
+    <!-- 偏好選單 Modal -->
+    <div
+      v-if="showFilterModal"
+      class="fixed inset-0 z-30 flex items-center justify-center bg-black bg-opacity-50"
+    >
       <div
-        v-if="isLoadingComplete"
-        class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col items-center justify-start rounded-tl-2xl rounded-tr-2xl bg-gray-50"
+        class="w-[90%] max-w-md rounded-xl bg-white p-5 shadow-xl"
+        @click.stop
       >
-        <!-- <img
-          src="/locatesite.png"
-          alt="Locate Icon"
-          class="absolute right-2 top-[-3rem] h-10 w-10 cursor-pointer transition-transform duration-200 hover:scale-110"
-          @click="centerToUser"
-        /> -->
-        <div class="fade-in flex w-full flex-col items-center">
-          <!-- 表頭 -->
-          <div
-            class="grid w-full grid-cols-4 gap-2 rounded-t-xl bg-gradient-to-r from-sky-400 to-cyan-400 px-2 py-1.5 text-center text-sm font-bold text-white shadow"
-          >
-            <div>機台資訊</div>
-            <div>排隊人數</div>
-            <div>預估時間</div>
-            <div>目前距離</div>
-          </div>
+        <!-- 標題 -->
+        <h2 class="mb-4 text-center text-lg font-bold text-dark-txt">
+          選擇你的偏好
+        </h2>
 
-          <!-- 印表機清單 -->
-          <div class="mt-1 w-full space-y-[6px]">
-            <!-- 印表機一 -->
-            <div
-              class="grid cursor-pointer grid-cols-4 items-start gap-[1px] rounded-xl bg-white px-2 py-2 shadow-sm"
-              @click="changeIntoWaitingPage"
+        <!-- 食物類型 -->
+        <div class="mb-3">
+          <p class="mb-1 font-semibold text-dark-txt">食物類型</p>
+          <div class="flex flex-wrap gap-2">
+            <FilterTag
+              v-for="item in foodOptions"
+              :key="item"
+              :label="item"
+              v-model:selected="selectedFood"
+            />
+          </div>
+        </div>
+
+        <!-- 飲食限制 -->
+        <div class="mb-3">
+          <p class="mb-1 font-semibold text-dark-txt">飲食限制</p>
+          <div class="flex flex-wrap gap-2">
+            <FilterTag
+              v-for="item in dietOptions"
+              :key="item"
+              :label="item"
+              v-model:selected="selectedDiet"
+            />
+          </div>
+        </div>
+
+        <!-- 隨機驚喜餐盒 -->
+        <div class="mb-4 flex items-center gap-2">
+          <input type="checkbox" id="surprise" v-model="acceptSurprise" />
+          <label for="surprise" class="text-sm text-gray-600">
+            接受隨機驚喜餐盒
+            <br />
+            <span class="text-xs text-gray-400"
+              >* 此選項無法指定／更換品項或客製化調整。</span
             >
-              <div class="flex flex-col items-center gap-[1px] text-sm">
-                <!-- <img
-                  src="/printer1.png"
-                  alt="Printer L6490"
-                  class="mb-[1px] h-11 w-auto"
-                /> -->
-                <span class="text-[14px] font-bold text-[#4D4D4D]">L6490</span>
-              </div>
-              <div class="flex flex-col items-center gap-[1px] text-sm">
-                <div class="h-4"></div>
-                <span class="text-[14px] font-bold text-[#4D4D4D]">0人</span>
-                <span
-                  class="rounded-full border border-cyan-400 px-2 py-[1px] text-[12px] font-bold text-cyan-500"
-                  >最少</span
-                >
-              </div>
-              <div class="flex flex-col items-center gap-[1px] text-sm">
-                <div class="h-4"></div>
-                <span class="text-[14px] font-bold text-[#4D4D4D]">0分鐘</span>
-                <span
-                  class="rounded-full border border-cyan-400 px-2 py-[1px] text-[12px] font-bold text-cyan-500"
-                  >最快</span
-                >
-              </div>
-              <div class="flex flex-col items-center gap-[1px] text-sm">
-                <div class="h-4"></div>
-                <span class="text-[14px] font-bold text-[#4D4D4D]">0M</span>
-                <span
-                  class="rounded-full border border-cyan-400 px-2 py-[1px] text-[12px] font-bold text-cyan-500"
-                  >最近</span
-                >
-              </div>
-            </div>
+          </label>
+        </div>
 
-            <!-- 印表機二 -->
-            <!-- <div
-                class="grid cursor-pointer grid-cols-4 items-start gap-[1px] rounded-xl bg-white px-2 py-2 shadow-sm"
-                @click="changeIntoWaitingPage"
-              >
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <img src="/printer2.png" alt="Printer L14150" class="mb-[1px] h-11 w-auto" />
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">L14150</span>
-                </div>
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <div class="h-4"></div>
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">3人</span>
-                </div>
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <div class="h-4"></div>
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">8分鐘</span>
-                </div>
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <div class="h-4"></div>
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">250M</span>
-                </div>
-              </div> -->
-
-            <!-- 印表機三 -->
-            <!-- <div
-                class="grid cursor-pointer grid-cols-4 items-start gap-[1px] rounded-xl bg-white px-2 py-2 shadow-sm"
-                @click="changeIntoWaitingPage"
-              >
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <img src="/printer3.png" alt="Printer L11050" class="mb-[1px] h-11 w-auto" />
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">L11050</span>
-                </div>
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <div class="h-4"></div>
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">2人</span>
-                </div>
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <div class="h-4"></div>
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">5分鐘</span>
-                </div>
-                <div class="flex flex-col items-center gap-[1px] text-sm">
-                  <div class="h-4"></div>
-                  <span class="text-[14px] font-bold text-[#4D4D4D]">1KM</span>
-                </div>
-              </div> -->
-          </div>
+        <!-- 按鈕 -->
+        <div class="mt-3 flex gap-3 flex-col">
+          <button
+            class="flex-1 rounded-full bg-green-500 py-2 text-white"
+            @click="submitFilter"
+          >
+            確認
+          </button>
+          <button
+            class="flex-1 rounded-full border border-green-500 py-2 text-green-500"
+            @click="closeFilter"
+          >
+            略過
+          </button>
         </div>
       </div>
     </div>
@@ -170,6 +166,52 @@ const customMarkers = [];
 let map;
 let directionsRenderer;
 let userMarker;
+
+const showFilterModal = ref(false);
+
+const foodOptions = [
+  "全部",
+  "生鮮商品",
+  "蔬菜水果",
+  "熟食",
+  "主食",
+  "小吃",
+  "甜點",
+  "飲料",
+  "台式料理",
+  "異國料理",
+];
+const dietOptions = [
+  "無限制",
+  "純素食",
+  "蔬食",
+  "無麩質",
+  "無牛肉",
+  "無雞肉",
+  "無豬肉",
+  "無海鮮",
+  "無辛香料",
+];
+
+const selectedFood = ref([]);
+const selectedDiet = ref([]);
+const acceptSurprise = ref(false);
+
+const toggleFilter = () => {
+  showFilterModal.value = true;
+};
+const closeFilter = () => {
+  showFilterModal.value = false;
+};
+const submitFilter = () => {
+  // 🔍 傳送到搜尋邏輯 or 儲存偏好
+  console.log("食物偏好:", selectedFood.value);
+  console.log("飲食限制:", selectedDiet.value);
+  console.log("驚喜餐盒:", acceptSurprise.value);
+  closeFilter();
+};
+
+const searchText = ref("");
 
 const changeIntoWaitingPage = () => {
   navigateTo("/waiting");
