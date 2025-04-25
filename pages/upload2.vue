@@ -12,15 +12,18 @@
         <!-- 表單主卡片 -->
         <div class="bg-white rounded-b-xl shadow-md p-5">
           <div class="flex justify-between items-center mb-3">
-            <h3 class="text-green-600 font-bold text-base">新增商品</h3>
+            <h3 class="text-[#67C23A] font-bold text-2xl">新增商品</h3>
+
   
             <!-- ✅ 文字上架按鈕加上導頁 -->
             <button
-              @click="goToTextUpload"
-              class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full"
+            @click="goToTextUpload"
+            class="flex items-center gap-2 bg-[#67C23A] text-white text-base font-semibold px-4 py-2 rounded-full hover:bg-green-600"
             >
-              ✏️ 文字上架
+            <img src="/pen.svg" alt="Pencil Icon" class="h-5 w-auto" />
+            文字上架
             </button>
+
           </div>
   
           <p class="text-xs text-gray-500 mb-2">
@@ -37,14 +40,14 @@
           <!-- 套用按鈕 -->
           <button
             @click="applySpeech"
-            class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded-full text-sm transition mb-6"
+            class="w-full bg-[#67C23A] hover:bg-green-600 text-white font-semibold py-2 rounded-full text-sm transition mb-6"
           >
             確認套用
           </button>
   
           <!-- 語音按鈕 -->
           <div class="flex flex-col items-center space-y-2">
-            <div class="bg-green-500 w-32 h-32 rounded-full flex items-center justify-center shadow-md">
+            <div class="bg-[#67C23A] w-32 h-32 rounded-full flex items-center justify-center shadow-md">
               <svg class="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z" />
                 <path

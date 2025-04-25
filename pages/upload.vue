@@ -12,13 +12,15 @@
         <!-- 卡片區塊 -->
         <div class="bg-white rounded-b-xl shadow-md p-4">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="text-green-600 font-bold text-base">新增商品</h3>
+            <h3 class="text-[#67C23A] font-bold text-2xl">新增商品</h3>
             <button
-              @click="goToVoiceUpload"
-              class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full"
+            @click="goToVoiceUpload"
+            class="flex items-center gap-2 bg-[#67C23A] text-white text-base font-semibold px-4 py-2 rounded-full hover:bg-green-600"
             >
-              🎙 語音上架
+            <img src="/mic.svg" alt="Mic Icon" class="h-5 w-auto" />
+            語音上架
             </button>
+
           </div>
   
           <!-- 商品照片 -->
@@ -31,7 +33,7 @@
               <img :src="img" class="w-full h-full object-cover" />
               <div
                 v-if="index === 0"
-                class="absolute bottom-0 left-0 right-0 bg-green-600 text-white text-xs text-center py-1"
+                class="absolute bottom-0 left-0 right-0 bg-[#67C23A] text-white text-xs text-center py-1"
               >
                 封面
               </div>
@@ -95,7 +97,7 @@
   
           <button
             @click="submitProduct"
-            class="w-full bg-green-500 text-white py-2 rounded-full font-semibold hover:bg-green-600 transition"
+            class="w-full bg-[#67C23A] text-white py-2 rounded-full font-semibold hover:bg-green-700 transition"
           >
             立即發布
           </button>
