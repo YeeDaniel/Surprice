@@ -14,30 +14,30 @@
         class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-white"
       >
         <!-- ✅ 新增這個：右上角定位圖示 -->
-        <!-- <img
-          src="/locatesite.png"
+        <img
+          src="/locatesite.svg"
           alt="Locate Icon"
           class="absolute right-2 top-[-3rem] h-10 w-10 cursor-pointer transition-transform duration-200 hover:scale-110"
           @click="centerToUser"
-        /> -->
+        />
         <!-- 這段 loading 的動畫區塊等定位完成後再顯示 -->
         <div class="fade-in flex flex-col items-center justify-center">
           <div
             class="absolute bottom-[6rem] top-[3rem] flex items-center justify-center"
           >
-            <!-- <img
+            <img
               class="animate-pulse-opacity relative left-4 scale-50"
               src="/locationLoading1.png"
               alt="Loading"
-            /> -->
-            <!-- <img
-              class="relative right-[4.45rem] scale-50"
+            />
+            <img
+              class="relative right-[3.85rem] scale-50"
               src="/locationLoading2.png"
               alt="Loading"
-            /> -->
+            />
           </div>
-          <h1 class="mt-16 text-2xl font-bold text-[#979797]">
-            正在偵測周圍可用印表機...
+          <h1 class="mt-16 text-2xl font-bold text-dark-txt">
+            正在尋找附近店家...
           </h1>
           <!-- 你之前的 loading dots 與導航按鈕等等 -->
         </div>
@@ -234,13 +234,13 @@ const initMap = () => {
   });
 
   // 自訂標記
-  customMarkers.push(
-    new google.maps.Marker({
-      position: { lat: 25.04550058100967, lng: 121.54846088465462 },
-      map,
-      icon: "/Icon.svg",
-    })
-  );
+  // customMarkers.push(
+  //   new google.maps.Marker({
+  //     position: { lat: 25.04550058100967, lng: 121.54846088465462 },
+  //     map,
+  //     // icon: "/Icon.svg",
+  //   })
+  // );
 
   directionsRenderer = new google.maps.DirectionsRenderer();
   directionsRenderer.setMap(map);
@@ -268,7 +268,7 @@ const initMap = () => {
       customMarkers.forEach((marker) => marker.setVisible(true));
       userMarker.setVisible(true);
       // 開啟畫面顯示
-      isLoadingComplete.value = true;
+      // isLoadingComplete.value = true;
     });
   }
 };
