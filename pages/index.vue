@@ -3,8 +3,9 @@
     <div
       class="flex h-screen w-full flex-col items-center justify-center bg-primary sm:w-[400px] md:w-[500px] lg:w-[600px]"
     >
-      <div class="flex h-[75%] items-center justify-center">
-        <!-- <img class="scale-50" src="/icon.png" alt="PrinterChain" /> -->
+      <div class="flex flex-col h-[75%] items-center justify-center">
+        <img class="my-8" src="/logo.svg" alt="PrinterChain" />
+        <img src="/logoText.svg" alt="PrinterChain" />
       </div>
       <div class="flex h-[25%] flex-col items-center justify-center">
         <UserButton @click="toPrintPage" class="my-2 cursor-pointer" />
