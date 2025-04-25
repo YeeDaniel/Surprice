@@ -8,7 +8,7 @@
         <img src="/logoText.svg" alt="PrinterChain" />
       </div>
       <div class="flex h-[25%] flex-col items-center justify-center">
-        <UserButton @click="toPrintPage" class="my-2 cursor-pointer" />
+        <UserButton @click="toWaitPage" class="my-2 cursor-pointer" />
         <SellerButton class="my-2 cursor-pointer" />
       </div>
     </div>
@@ -18,29 +18,28 @@
 <script setup>
 const config = useRuntimeConfig().public.apiBase;
 
-const toPrintPage = async () => {
-  try {
-    const response = await fetch(`${config}/basic/token/status`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    console.log("回傳資料：", data);
-
-    if (data.is_valid === false) {
-      window.open(data.auth_url, "_blank");
-    } else {
-      navigateTo("/new");
-    }
-  } catch (error) {
-    console.error("發送失敗：", error);
-  }
+const toWaitPage = async () => {
+  // try {
+  //   const response = await fetch(`${config}/basic/token/status`, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   if (!response.ok) {
+  //     throw new Error(`HTTP error! status: ${response.status}`);
+  //   }
+  //   const data = await response.json();
+  //   console.log("回傳資料：", data);
+  //   if (data.is_valid === false) {
+  //     window.open(data.auth_url, "_blank");
+  //   } else {
+  //     navigateTo("/new");
+  //   }
+  // } catch (error) {
+  //   console.error("發送失敗：", error);
+  // }
+  navigateTo("/search");
 };
 </script>
 
