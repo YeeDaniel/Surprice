@@ -14,27 +14,27 @@
         class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-white"
       >
         <!-- ✅ 新增這個：右上角定位圖示 -->
-        <img
+        <!-- <img
           src="/locatesite.png"
           alt="Locate Icon"
           class="absolute right-2 top-[-3rem] h-10 w-10 cursor-pointer transition-transform duration-200 hover:scale-110"
           @click="centerToUser"
-        />
+        /> -->
         <!-- 這段 loading 的動畫區塊等定位完成後再顯示 -->
         <div class="fade-in flex flex-col items-center justify-center">
           <div
             class="absolute bottom-[6rem] top-[3rem] flex items-center justify-center"
           >
-            <img
+            <!-- <img
               class="animate-pulse-opacity relative left-4 scale-50"
               src="/locationLoading1.png"
               alt="Loading"
-            />
-            <img
+            /> -->
+            <!-- <img
               class="relative right-[4.45rem] scale-50"
               src="/locationLoading2.png"
               alt="Loading"
-            />
+            /> -->
           </div>
           <h1 class="mt-16 text-2xl font-bold text-[#979797]">
             正在偵測周圍可用印表機...
@@ -51,12 +51,12 @@
         v-if="isLoadingComplete"
         class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col items-center justify-start rounded-tl-2xl rounded-tr-2xl bg-gray-50"
       >
-        <img
+        <!-- <img
           src="/locatesite.png"
           alt="Locate Icon"
           class="absolute right-2 top-[-3rem] h-10 w-10 cursor-pointer transition-transform duration-200 hover:scale-110"
           @click="centerToUser"
-        />
+        /> -->
         <div class="fade-in flex w-full flex-col items-center">
           <!-- 表頭 -->
           <div
@@ -76,11 +76,11 @@
               @click="changeIntoWaitingPage"
             >
               <div class="flex flex-col items-center gap-[1px] text-sm">
-                <img
+                <!-- <img
                   src="/printer1.png"
                   alt="Printer L6490"
                   class="mb-[1px] h-11 w-auto"
-                />
+                /> -->
                 <span class="text-[14px] font-bold text-[#4D4D4D]">L6490</span>
               </div>
               <div class="flex flex-col items-center gap-[1px] text-sm">

@@ -12,17 +12,17 @@
       <div
         class="absolute bottom-0 z-10 flex h-[30%] w-full items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-white"
       >
-        <img
+        <!-- <img
           src="/locatesite.png"
           alt="Locate Icon"
           class="absolute right-2 top-[-3rem] h-10 w-10 cursor-pointer transition-transform duration-200 hover:scale-110"
           @click="centerToUser"
-        />
+        /> -->
         <div
           class="flex w-full max-w-screen-sm items-center justify-center px-4"
         >
           <!-- ✅ 新增這個：右上角定位圖示 -->
-          <img class="max-w-[33%] scale-75" src="/printer.png" alt="printer" />
+          <!-- <img class="max-w-[33%] scale-75" src="/printer.png" alt="printer" /> -->
           <div class="flex flex-col items-center justify-center">
             <h1 class="text-sm font-bold text-[#46D1FE]">{{ statusText }}</h1>
             <div
@@ -70,7 +70,7 @@
               v-show="currentStage === 2 || currentStage === 3"
               class="mt-4 flex w-full max-w-[500px] items-center justify-center"
             >
-              <img class="scale-150 px-4" src="/walk.svg" alt="walk" />
+              <!-- <img class="scale-150 px-4" src="/walk.svg" alt="walk" /> -->
               <h1 class="text-sm font-bold text-[#979797]">
                 您可以準備前往取件
               </h1>

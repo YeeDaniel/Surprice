@@ -4,7 +4,7 @@
       class="flex h-screen w-full flex-col items-center justify-center bg-red-50 sm:w-[400px] md:w-[500px] lg:w-[600px]"
     >
       <div class="flex h-[75%] items-center justify-center">
-        <img class="scale-50" src="/icon.png" alt="PrinterChain" />
+        <!-- <img class="scale-50" src="/icon.png" alt="PrinterChain" /> -->
       </div>
       <div class="flex h-[25%] flex-col items-center justify-center">
         <PrintButton @click="toPrintPage" class="my-2 cursor-pointer" />
