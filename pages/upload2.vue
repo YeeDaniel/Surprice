@@ -1,6 +1,6 @@
 <template>
     <div class="min-h-screen bg-gray-100 px-4 py-6 flex justify-center">
-      <div class="w-full max-w-md">
+        <div class="w-full sm:w-[400px] md:w-[500px] lg:w-[600px]">
         <!-- 頁首店名區塊 -->
         <h2
           class="text-center text-white text-xl font-semibold mb-2 bg-cover py-9 rounded-t-xl"
