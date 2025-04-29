@@ -9,7 +9,7 @@
       </div>
       <div class="flex h-[25%] flex-col items-center justify-center">
         <UserButton @click="toWaitPage" class="my-2 cursor-pointer" />
-        <SellerButton class="my-2 cursor-pointer" />
+        <SellerButton @click="toInfoPage" class="my-2 cursor-pointer" />
       </div>
     </div>
   </div>
@@ -40,6 +40,11 @@ const toWaitPage = async () => {
   //   console.error("發送失敗：", error);
   // }
   navigateTo("/search");
+};
+
+const toInfoPage = async () => {
+  
+  navigateTo("/info");
 };
 </script>
 
