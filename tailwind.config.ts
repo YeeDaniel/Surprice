@@ -15,8 +15,8 @@ const config: Config = {
             "primary": "#6DBD6A",
             "light-txt": "#ffffff",
             "dark-txt": "#4D4D4D",
-            "gray": "#999999",
-            "border": "#979797",
+            // "gray": "#999999",
+            // "border": "#979797",
             
         }
     },
