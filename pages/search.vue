@@ -78,12 +78,37 @@
           </h1>
           <!-- 你之前的 loading dots 與導航按鈕等等 -->
         </div>
-        <!-- ✅ loading結束：顯示成功訊息 or 其他內容 ，余哥這邊就是 info 的實作地方，交給你囉-->
-        <!-- <div v-show="isLoadingComplete" class="fade-in flex flex-col items-center">
-            <h1 class="text-xl font-bold text-[#46D1FE]">附近印表機已偵測</h1>
-          </div> -->
-        <!-- ✅ loading結束：顯示成功訊息 or 其他內容 -->
       </div>
+      <!-- ✅ loading結束：顯示成功訊息 or 其他內容 ，余哥這邊就是 info 的實作地方，交給你囉-->
+      <div
+        v-show="isLoadingComplete"
+        class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col rounded-tl-2xl rounded-tr-2xl bg-white p-4"
+      >
+        <!-- 標題與排序選單 -->
+        <div class="flex items-center justify-between px-4 pt-4 pb-2">
+          <h2 class="text-lg font-bold text-gray-800">附近優惠</h2>
+          <select
+            v-model="sortOption"
+            class="rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 shadow-sm"
+          >
+            <option disabled value="">排序</option>
+            <option value="distance">距離最近</option>
+            <option value="discount">折扣最大</option>
+            <option value="price">價格最低</option>
+          </select>
+        </div>
+        <!-- 可滑動的店家卡片列表 -->
+        <div class="overflow-y-auto px-4 pb-4">
+          <StoreCard
+            v-for="store in visibleStores"
+            :key="store.id"
+            :store="store"
+            @update:favorite="toggleFavorite"
+            @click="focusStoreOnMap(store)"
+          />
+        </div>
+      </div>
+      <!-- ✅ loading結束：顯示成功訊息 or 其他內容 -->
     </div>
     <!-- 偏好選單 Modal -->
     <div
@@ -158,10 +183,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { useFavoritesFilter } from "@/composables/useFavoritesFilter";
 
 const isLoadingComplete = ref(false);
 const customMarkers = [];
+const selectedStoreId = ref(null);
+const { showFavoritesOnly } = useFavoritesFilter();
 
 let map;
 let directionsRenderer;
@@ -213,9 +241,182 @@ const submitFilter = () => {
 
 const searchText = ref("");
 
-const changeIntoWaitingPage = () => {
-  navigateTo("/waiting");
+const getMarkerIconByType = (type) => {
+  switch (type) {
+    case "green":
+      return "/green.svg";
+    case "orange":
+      return "/orange.svg";
+    case "red":
+      return "/red.svg";
+    default:
+      return "/green.svg";
+  }
 };
+
+const addStoreMarker = (store) => {
+  const marker = new google.maps.Marker({
+    position: store.location,
+    map,
+    icon: {
+      url: getMarkerIconByType(store.level),
+      scaledSize: new google.maps.Size(32, 32),
+    },
+  });
+
+  marker.addListener("click", () => {
+    focusStoreOnMap(store);
+  });
+
+  customMarkers.push({ id: store.id, marker });
+};
+
+const storeList = ref([
+  {
+    id: 1,
+    name: "王家臭豆腐",
+    level: "red", // icon 用
+    discount: "-60%",
+    price: 30,
+    distance: "500公尺",
+    category: "台式小吃",
+    time: "23:00 - 23:30",
+    image: "/store1.png",
+    location: {
+      lat: 25.035,
+      lng: 121.565,
+    },
+    remaining: 5, // 剩餘份數
+    isFavorite: false, // 是否收藏
+  },
+  {
+    id: 2,
+    name: "King美式餐廳",
+    level: "orange",
+    discount: "-40%",
+    price: 80,
+    distance: "1.2公里",
+    category: "美式",
+    time: "21:00 - 22:00",
+    image: "/store2.png",
+    location: {
+      lat: 25.036,
+      lng: 121.567,
+    },
+    remaining: 3, // 剩餘份數
+    isFavorite: false, // 是否收藏
+  },
+  {
+    id: 3,
+    name: "妮帕歐甜品",
+    level: "green",
+    discount: "-20%",
+    price: 70,
+    distance: "1.0公里",
+    category: "甜點",
+    time: "21:00 - 22:00",
+    image: "/store3.png",
+    location: {
+      lat: 25.037,
+      lng: 121.566,
+    },
+    remaining: 4, // 剩餘份數
+    isFavorite: false, // 是否收藏
+  },
+]);
+
+const toggleFavorite = (id) => {
+  const store = storeList.value.find((s) => s.id === id);
+  if (store) store.isFavorite = !store.isFavorite;
+};
+
+const filteredStores = computed(() =>
+  selectedStoreId.value
+    ? storeList.value.filter((s) => s.id === selectedStoreId.value)
+    : storeList.value
+);
+
+const visibleStores = computed(() => {
+  let stores = [...storeList.value];
+
+  // 🎯 若啟用收藏模式 → 僅顯示 isFavorite
+  if (showFavoritesOnly.value) {
+    stores = stores.filter((s) => s.isFavorite);
+
+    // 🎯 否則若選定特定店家（點擊地圖或卡片）
+  } else if (selectedStoreId.value) {
+    stores = stores.filter((s) => s.id === selectedStoreId.value);
+  }
+  // // 篩選指定店家（點地圖）
+  // if (selectedStoreId.value) {
+  //   stores = stores.filter((s) => s.id === selectedStoreId.value);
+  // }
+
+  // 排序
+  switch (sortOption.value) {
+    case "distance":
+      return stores.sort(
+        (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
+      );
+    case "discount":
+      return stores.sort(
+        (a, b) =>
+          parseFloat(b.discount.replace("%", "")) -
+          parseFloat(a.discount.replace("%", ""))
+      );
+    case "price":
+      return stores.sort((a, b) => a.price - b.price);
+    default:
+      return stores;
+  }
+});
+
+const focusStoreOnMap = (store) => {
+  selectedStoreId.value = store.id;
+
+  // 找出 marker 並放大
+  const target = customMarkers.find((m) => m.id === store.id);
+  if (target) {
+    map.setCenter(store.location);
+    map.setZoom(17);
+    target.marker.setIcon({
+      url: getMarkerIconByType(store.level),
+      scaledSize: new google.maps.Size(48, 48), // 放大 icon
+    });
+  }
+
+  // 其他 marker 還原尺寸
+  customMarkers.forEach(({ id, marker }) => {
+    if (id !== store.id) {
+      marker.setIcon({
+        url: getMarkerIconByType(store.level),
+        scaledSize: new google.maps.Size(32, 32),
+      });
+    }
+  });
+};
+
+const sortOption = ref("distance");
+
+const sortedStores = computed(() => {
+  const stores = [...storeList.value];
+  switch (sortOption.value) {
+    case "distance":
+      return stores.sort(
+        (a, b) => parseFloat(a.distance) - parseFloat(b.distance)
+      );
+    case "discount":
+      return stores.sort(
+        (a, b) =>
+          parseFloat(b.discount.replace("%", "")) -
+          parseFloat(a.discount.replace("%", ""))
+      );
+    case "price":
+      return stores.sort((a, b) => a.price - b.price);
+    default:
+      return stores;
+  }
+});
 
 const centerToUser = () => {
   if (userMarker) {
@@ -276,13 +477,13 @@ const initMap = () => {
   });
 
   // 自訂標記
-  // customMarkers.push(
-  //   new google.maps.Marker({
-  //     position: { lat: 25.04550058100967, lng: 121.54846088465462 },
-  //     map,
-  //     // icon: "/Icon.svg",
-  //   })
-  // );
+  customMarkers.push(
+    new google.maps.Marker({
+      position: { lat: 25.04550058100967, lng: 121.54846088465462 },
+      map,
+      icon: "/Icon.svg",
+    })
+  );
 
   directionsRenderer = new google.maps.DirectionsRenderer();
   directionsRenderer.setMap(map);
@@ -301,7 +502,7 @@ const initMap = () => {
         map,
         title: "你的位置",
         icon: {
-          url: "/currentLocation.png", // ✅ 你的圖示路徑
+          url: "/currentLocation2.svg", // ✅ 你的圖示路徑
           scaledSize: new google.maps.Size(32, 32), // ✅ 控制圖示大小 (像素)
         },
       });
@@ -310,7 +511,11 @@ const initMap = () => {
       customMarkers.forEach((marker) => marker.setVisible(true));
       userMarker.setVisible(true);
       // 開啟畫面顯示
-      // isLoadingComplete.value = true;
+      isLoadingComplete.value = true;
+      // TODO: 未來從 API 取得資料
+      // const result = await $fetch('/api/stores');
+      // storeList.value = result;
+      storeList.value.forEach((store) => addStoreMarker(store));
     });
   }
 };

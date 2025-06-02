@@ -10,13 +10,20 @@
         src="/NavbarText.svg"
         alt="NavbarText"
       />
-      <img class="cursor-pointer" src="/Heart.svg" alt="Heart" />
+      <img
+        class="cursor-pointer"
+        @click="toggleFavoritesOnly"
+        :src="showFavoritesOnly ? '/NavbarHeartFill.png' : '/NavbarHeart.png'"
+        alt="Heart"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { useFavoritesFilter } from "@/composables/useFavoritesFilter";
+
+const { toggleFavoritesOnly, showFavoritesOnly } = useFavoritesFilter();
 
 const toHomePage = () => {
   navigateTo("/");
