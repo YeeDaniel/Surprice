@@ -15,7 +15,10 @@ const config: Config = {
             "primary": "#6DBD6A",
             "light-txt": "#ffffff",
             "dark-txt": "#4D4D4D",
-            "green": "#6DBD6A",
+            green: {
+              300: '#86efac', // Tailwind 預設的 green-300
+              DEFAULT: '#6DBD6A', // 這樣 `text-green` 仍指向你自訂的綠色
+            },
             // "gray": "#999999",
             // "border": "#979797",
             
