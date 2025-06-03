@@ -44,7 +44,7 @@ const toWaitPage = async () => {
 
 const toInfoPage = async () => {
   
-  navigateTo("/info");
+  navigateTo("/seller");
 };
 </script>
 
