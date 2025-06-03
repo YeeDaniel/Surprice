@@ -104,7 +104,7 @@
             :key="store.id"
             :store="store"
             @update:favorite="toggleFavorite"
-            @click="focusStoreOnMap(store)"
+            @click="navigateToStore(store)"
           />
         </div>
       </div>
@@ -283,8 +283,8 @@ const storeList = ref([
     time: "23:00 - 23:30",
     image: "/store1.png",
     location: {
-      lat: 25.035,
-      lng: 121.565,
+      lat: 24.9643,
+      lng: 121.194,
     },
     remaining: 5, // 剩餘份數
     isFavorite: false, // 是否收藏
@@ -300,8 +300,8 @@ const storeList = ref([
     time: "21:00 - 22:00",
     image: "/store2.png",
     location: {
-      lat: 25.036,
-      lng: 121.567,
+      lat: 24.9638,
+      lng: 121.191,
     },
     remaining: 3, // 剩餘份數
     isFavorite: false, // 是否收藏
@@ -317,8 +317,8 @@ const storeList = ref([
     time: "21:00 - 22:00",
     image: "/store3.png",
     location: {
-      lat: 25.037,
-      lng: 121.566,
+      lat: 24.9644,
+      lng: 121.1912,
     },
     remaining: 4, // 剩餘份數
     isFavorite: false, // 是否收藏
@@ -370,6 +370,10 @@ const visibleStores = computed(() => {
       return stores;
   }
 });
+
+const navigateToStore = (store) => {
+  navigateTo(`/store?id=${store.id}`);
+};
 
 const focusStoreOnMap = (store) => {
   selectedStoreId.value = store.id;
