@@ -48,7 +48,7 @@
 
       <div
         v-if="!isLoadingComplete"
-        class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-white"
+        class="absolute bottom-0 top-[55%] z-10 flex w-full flex-col items-center justify-center rounded-tl-2xl rounded-tr-2xl bg-white"
       >
         <!-- ✅ 新增這個：右上角定位圖示 -->
         <img
@@ -82,7 +82,7 @@
       <!-- ✅ loading結束：顯示成功訊息 or 其他內容 ，余哥這邊就是 info 的實作地方，交給你囉-->
       <div
         v-show="isLoadingComplete"
-        class="absolute bottom-0 top-[65%] z-10 flex w-full flex-col rounded-tl-2xl rounded-tr-2xl bg-white p-4"
+        class="absolute bottom-0 top-[55%] z-10 flex w-full flex-col rounded-tl-2xl rounded-tr-2xl bg-white p-4"
       >
         <!-- 標題與排序選單 -->
         <div class="flex items-center justify-between px-4 pt-4 pb-2">
@@ -104,7 +104,7 @@
             :key="store.id"
             :store="store"
             @update:favorite="toggleFavorite"
-            @click="focusStoreOnMap(store)"
+            @click="navigateToStore(store)"
           />
         </div>
       </div>
@@ -283,8 +283,8 @@ const storeList = ref([
     time: "23:00 - 23:30",
     image: "/store1.png",
     location: {
-      lat: 25.035,
-      lng: 121.565,
+      lat: 24.9643,
+      lng: 121.194,
     },
     remaining: 5, // 剩餘份數
     isFavorite: false, // 是否收藏
@@ -300,8 +300,8 @@ const storeList = ref([
     time: "21:00 - 22:00",
     image: "/store2.png",
     location: {
-      lat: 25.036,
-      lng: 121.567,
+      lat: 24.9646,
+      lng: 121.191,
     },
     remaining: 3, // 剩餘份數
     isFavorite: false, // 是否收藏
@@ -311,14 +311,14 @@ const storeList = ref([
     name: "妮帕歐甜品",
     level: "green",
     discount: "-20%",
-    price: 70,
-    distance: "1.0公里",
+    price: 90,
+    distance: "1.3公里",
     category: "甜點",
     time: "21:00 - 22:00",
     image: "/store3.png",
     location: {
-      lat: 25.037,
-      lng: 121.566,
+      lat: 24.9644,
+      lng: 121.1912,
     },
     remaining: 4, // 剩餘份數
     isFavorite: false, // 是否收藏
@@ -370,6 +370,10 @@ const visibleStores = computed(() => {
       return stores;
   }
 });
+
+const navigateToStore = (store) => {
+  navigateTo(`/store?id=${store.id}`);
+};
 
 const focusStoreOnMap = (store) => {
   selectedStoreId.value = store.id;

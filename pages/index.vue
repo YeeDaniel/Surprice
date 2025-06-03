@@ -1,15 +1,15 @@
 <template>
   <div class="flex items-center justify-center">
     <div
+      :class="[
+        'transition-opacity duration-500',
+        showPage ? 'opacity-100' : 'opacity-0',
+      ]"
       class="flex h-screen w-full flex-col items-center justify-center bg-primary sm:w-[400px] md:w-[500px] lg:w-[600px]"
     >
-      <div class="flex flex-col h-[75%] items-center justify-center">
-        <img class="my-8" src="/logo.svg" alt="PrinterChain" />
-        <img src="/logoText.svg" alt="PrinterChain" />
-      </div>
-      <div class="flex h-[25%] flex-col items-center justify-center">
-        <UserButton @click="toWaitPage" class="my-2 cursor-pointer" />
-        <SellerButton @click="toInfoPage" class="my-2 cursor-pointer" />
+      <div class="flex flex-col h-full items-center justify-center">
+        <img class="my-8" src="/logo.svg" alt="Surprice" />
+        <img src="/logoText.svg" alt="Surprice" />
       </div>
     </div>
   </div>
@@ -17,6 +17,19 @@
 
 <script setup>
 const config = useRuntimeConfig().public.apiBase;
+import { ref } from "vue";
+
+const showPage = ref(true);
+
+// 等 2 秒後開始淡出
+setTimeout(() => {
+  showPage.value = false; // 觸發淡出（opacity 從 1 → 0）
+
+  // 再等 0.5 秒，等動畫播完後跳轉頁面
+  setTimeout(() => {
+    navigateTo("/login");
+  }, 150);
+}, 2000);
 
 const toWaitPage = async () => {
   // try {
@@ -41,11 +54,14 @@ const toWaitPage = async () => {
   // }
   navigateTo("/search");
 };
-
-const toInfoPage = async () => {
-  
-  navigateTo("/seller");
-};
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-out {
+  transition: opacity 0.5s ease;
+}
+.fade-out[v-cloak],
+.fade-out[style*="display: none"] {
+  opacity: 0;
+}
+</style>
