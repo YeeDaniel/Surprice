@@ -3,13 +3,9 @@
     <div
       class="flex h-screen w-full flex-col items-center justify-center bg-primary sm:w-[400px] md:w-[500px] lg:w-[600px]"
     >
-      <div class="flex flex-col h-[75%] items-center justify-center">
-        <img class="my-8" src="/logo.svg" alt="PrinterChain" />
-        <img src="/logoText.svg" alt="PrinterChain" />
-      </div>
-      <div class="flex h-[25%] flex-col items-center justify-center">
-        <UserButton @click="toWaitPage" class="my-2 cursor-pointer" />
-        <SellerButton @click="toInfoPage" class="my-2 cursor-pointer" />
+      <div class="flex flex-col h-full items-center justify-center">
+        <img class="my-8" src="/logo.svg" alt="Surprice" />
+        <img src="/logoText.svg" alt="Surprice" />
       </div>
     </div>
   </div>
@@ -17,6 +13,9 @@
 
 <script setup>
 const config = useRuntimeConfig().public.apiBase;
+setTimeout(() => {
+  navigateTo("/login");
+}, 2000); // 延遲2秒後跳轉
 
 const toWaitPage = async () => {
   // try {
@@ -43,7 +42,6 @@ const toWaitPage = async () => {
 };
 
 const toInfoPage = async () => {
-  
   navigateTo("/info");
 };
 </script>
