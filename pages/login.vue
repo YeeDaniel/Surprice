@@ -110,18 +110,25 @@ const handleLogin = () => {
   );
 
   if (!match) {
-    // 若找不到帳號，導向尚未註冊頁面
     return navigateTo("/noAccount");
   }
 
   if (match.password === password.value) {
     errorMessage.value = "";
 
-    // 成功登入導向不同頁面
     if (match.role === "user") {
       navigateTo("/search");
     } else if (match.role === "shop") {
-      navigateTo("/info");
+      // 🔍 判斷是否第一次登入
+      const isFirst = localStorage.getItem("shopFirstLogin") !== "false";
+
+      if (isFirst) {
+        // 記錄非第一次登入
+        localStorage.setItem("shopFirstLogin", "false");
+        navigateTo("/info");
+      } else {
+        navigateTo("/seller");
+      }
     }
   } else {
     errorMessage.value = "帳號或密碼錯誤";
