@@ -1,6 +1,10 @@
 <template>
   <div class="flex items-center justify-center">
     <div
+      :class="[
+        'transition-opacity duration-500',
+        showPage ? 'opacity-100' : 'opacity-0',
+      ]"
       class="flex h-screen w-full flex-col items-center justify-center bg-primary sm:w-[400px] md:w-[500px] lg:w-[600px]"
     >
       <div class="flex flex-col h-full items-center justify-center">
@@ -13,9 +17,19 @@
 
 <script setup>
 const config = useRuntimeConfig().public.apiBase;
+import { ref } from "vue";
+
+const showPage = ref(true);
+
+// 等 2 秒後開始淡出
 setTimeout(() => {
-  navigateTo("/login");
-}, 2000); // 延遲2秒後跳轉
+  showPage.value = false; // 觸發淡出（opacity 從 1 → 0）
+
+  // 再等 0.5 秒，等動畫播完後跳轉頁面
+  setTimeout(() => {
+    navigateTo("/login");
+  }, 150);
+}, 2000);
 
 const toWaitPage = async () => {
   // try {
@@ -42,4 +56,12 @@ const toWaitPage = async () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-out {
+  transition: opacity 0.5s ease;
+}
+.fade-out[v-cloak],
+.fade-out[style*="display: none"] {
+  opacity: 0;
+}
+</style>
