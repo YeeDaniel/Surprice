@@ -40,10 +40,6 @@ const toWaitPage = async () => {
   // }
   navigateTo("/search");
 };
-
-const toInfoPage = async () => {
-  navigateTo("/info");
-};
 </script>
 
 <style scoped></style>
