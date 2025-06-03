@@ -76,7 +76,7 @@
       <!-- 註冊按鈕 -->
       <button
         @click="handleRegister"
-        class="w-full rounded-full bg-green-500 py-2 font-bold text-white hover:bg-green mb-6 bg-green"
+        class="w-full rounded-full py-2 font-bold text-white hover:bg-green mb-6 bg-green"
       >
         註冊
       </button>
