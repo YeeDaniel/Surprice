@@ -123,40 +123,40 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
 function goToFavoriteUpload() {
   // 導向「常用上架」頁面
-  router.push({ path: '/upload' })
+  router.push({ path: "/upload" });
 }
 
 function goToProductUpload() {
   // 導向「商品上架」頁面
-  router.push({ path: '/upload' })
+  router.push({ path: "/upload" });
 }
 
 function goToUploadHistory() {
-  router.push({ path: '/upload-history' })
+  router.push({ path: "/upload-history" });
 }
 
 function goToNotifications() {
-  router.push({ path: '/notifications' })
+  router.push({ path: "/notifications" });
 }
 
 function goToAccountSettings() {
-  router.push({ path: '/account-settings' })
+  router.push({ path: "/account-settings" });
 }
 
 function goToSystemSettings() {
-  router.push({ path: '/system-settings' })
+  router.push({ path: "/system-settings" });
 }
 
 function logout() {
   // 登出並導回登入頁（可改為實際邏輯）
-  alert('已登出！')
-  // router.push('/login')
+  alert("已登出！");
+  router.push("/login");
 }
 </script>
 

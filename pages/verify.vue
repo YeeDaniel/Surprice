@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full h-full shadow-md bg-green">
     <!-- Logo + 標語 -->
     <div class="flex flex-col items-center h-[35%] justify-center">
-      <img src="/logo.svg" alt="Logo" class="w-16 mb-2" />
+      <img src="/Logo.svg" alt="Logo" class="w-16 mb-2" />
       <p class="text-lg font-semibold text-white">歡迎使用找好康！</p>
     </div>
 

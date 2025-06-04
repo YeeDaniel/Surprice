@@ -8,7 +8,7 @@
       class="flex h-screen w-full flex-col items-center justify-center bg-primary sm:w-[400px] md:w-[500px] lg:w-[600px]"
     >
       <div class="flex flex-col h-full items-center justify-center">
-        <img class="my-8" src="/logo.svg" alt="Surprice" />
+        <img class="my-8" src="/Logo.svg" alt="Surprice" />
         <img src="/logoText.svg" alt="Surprice" />
       </div>
     </div>
@@ -17,19 +17,23 @@
 
 <script setup>
 const config = useRuntimeConfig().public.apiBase;
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const showPage = ref(true);
 
-// 等 2 秒後開始淡出
-setTimeout(() => {
-  showPage.value = false; // 觸發淡出（opacity 從 1 → 0）
+const goToLogin = () => {
+  navigateTo("/login");
+};
 
-  // 再等 0.5 秒，等動畫播完後跳轉頁面
+onMounted(() => {
   setTimeout(() => {
-    navigateTo("/login");
-  }, 150);
-}, 2000);
+    showPage.value = false; // 淡出動畫
+
+    setTimeout(() => {
+      goToLogin(); // 正確地在 onMounted 裡使用
+    }, 500); // 注意這裡要 500ms，跟動畫一致
+  }, 4000);
+});
 
 const toWaitPage = async () => {
   // try {

@@ -55,7 +55,9 @@
         </button>
 
         <!-- 圓點指示器 -->
-        <div class="absolute bottom-2 left-0 right-0 flex justify-center space-x-1">
+        <div
+          class="absolute bottom-2 left-0 right-0 flex justify-center space-x-1"
+        >
           <span
             v-for="(img, idx) in offerDetail.images"
             :key="idx"
@@ -70,12 +72,20 @@
         <!-- 名稱 ＆ 價格 -->
         <div class="flex justify-between items-center mb-2">
           <p class="text-lg font-semibold">{{ offerDetail.name }}</p>
-          <p class="text-xl font-bold text-[#67C23A]">${{ offerDetail.currentPrice }}</p>
+          <p class="text-xl font-bold text-[#67C23A]">
+            ${{ offerDetail.currentPrice }}
+          </p>
         </div>
         <!-- 數量、折扣、原價（三行小字）-->
-        <p class="text-xs text-gray-500 mb-0.5">數量：{{ offerDetail.count }}</p>
-        <p class="text-xs text-gray-500 mb-0.5">折扣：{{ offerDetail.discount }}%</p>
-        <p class="text-xs text-gray-500">原價：{{ offerDetail.originalPrice }}</p>
+        <p class="text-xs text-gray-500 mb-0.5">
+          數量：{{ offerDetail.count }}
+        </p>
+        <p class="text-xs text-gray-500 mb-0.5">
+          折扣：{{ offerDetail.discount }}%
+        </p>
+        <p class="text-xs text-gray-500">
+          原價：{{ offerDetail.originalPrice }}
+        </p>
       </div>
 
       <!-- 商家資訊區塊 -->
@@ -178,8 +188,7 @@
     <transition name="fade">
       <div
         v-if="showToast"
-        class="fixed inset-0 flex items-center justify-center 
-               bg-black/40 backdrop-blur-sm"
+        class="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
       >
         <div class="bg-gray-800 text-white text-sm px-4 py-2 rounded-lg">
           已加入最愛
@@ -190,10 +199,10 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
 // ----------------------------------------------------------------------------
 // 把「offerDetail.images」寫死，避免拿不到資料時出錯
@@ -201,84 +210,87 @@ const router = useRouter()
 const offerDetail = ref({
   images: [
     // 確保這些圖放在 public 資料夾底下
-    '/beef1.png',
-    '/beef2.png',
-    '/beef3.png',
+    "/beef1.png",
+    "/beef2.png",
+    "/beef3.png",
   ],
-  name: '牛肉三明治',
+  name: "牛肉三明治",
   count: 2,
   discount: 60,
   originalPrice: 100,
   currentPrice: 60,
   merchant: {
-    name: 'King 美式餐廳',
-    type: '美式',
-    address: '新北市三重區重新路二段156號',
-    time: '21:00 - 22:00',
+    name: "King 美式餐廳",
+    type: "美式",
+    address: "桃園市中壢區中大路300號",
+    time: "21:00 - 22:00",
   },
-})
+});
 
 // Carousel 目前顯示的圖片索引
-const currentIndex = ref(0)
-let carouselTimer = null
+const currentIndex = ref(0);
+let carouselTimer = null;
 
 // Toast 控制
-const showToast = ref(false)
-let toastTimer = null
+const showToast = ref(false);
+let toastTimer = null;
 
 // 切換到下一張
 function nextImage() {
   currentIndex.value =
-    (currentIndex.value + 1) % offerDetail.value.images.length
+    (currentIndex.value + 1) % offerDetail.value.images.length;
 }
 
 // 切換到上一張
 function prevImage() {
   currentIndex.value =
     (currentIndex.value - 1 + offerDetail.value.images.length) %
-    offerDetail.value.images.length
+    offerDetail.value.images.length;
 }
 
 // 如果要自動輪播，要在 client 端呼叫 setInterval（放到 onMounted 裡）
 function startCarouselAutoplay() {
   carouselTimer = setInterval(() => {
-    nextImage()
-  }, 3000)
+    nextImage();
+  }, 3000);
 }
 
 // 停掉自動輪播
 function stopCarouselAutoplay() {
   if (carouselTimer) {
-    clearInterval(carouselTimer)
-    carouselTimer = null
+    clearInterval(carouselTimer);
+    carouselTimer = null;
   }
 }
 
 // 導航按鈕（可自行改成真實地圖邏輯）
 function navigateToMap() {
-  alert('⛳ 開啟導航功能（請自行改成真實地圖呼叫）')
+  // alert("⛳ 開啟導航功能（請自行改成真實地圖呼叫）");
+  window.open(
+    "https://www.google.com/maps/place/%E6%BC%A2%E5%A0%A1%E7%8E%8B+Burger+King+%E4%B8%AD%E5%A4%AE%E5%BA%97/@24.9927178,121.203646,13z/data=!4m10!1m2!2m1!1sBurger+King!3m6!1s0x3468230be26a2d09:0x407aec20e85788fa!8m2!3d24.9670759!4d121.1906469!15sCgtCdXJnZXIgS2luZyIDiAEBWg0iC2J1cmdlciBraW5nkgEUZmFzdF9mb29kX3Jlc3RhdXJhbnSqAV0KDC9nLzExaDA2cXQyXwoJL20vMDE2MDFxEAEqDyILYnVyZ2VyIGtpbmcoRTIeEAEiGn7CboC9y61LJZ6sh1OlSWmrWV2-14HDTWxoMg8QAiILYnVyZ2VyIGtpbmfgAQA!16s%2Fg%2F11ft4vz_vx?entry=ttu&g_ep=EgoyMDI1MDUyOC4wIKXMDSoASAFQAw%3D%3D"
+  );
 }
 
 // 加入最愛：顯示 Toast 1.5 秒
 function addToFavorites() {
-  showToast.value = true
-  if (toastTimer) clearTimeout(toastTimer)
+  showToast.value = true;
+  if (toastTimer) clearTimeout(toastTimer);
 
   toastTimer = setTimeout(() => {
-    showToast.value = false
-  }, 1500)
+    showToast.value = false;
+  }, 1500);
 }
 
 // 在元件掛載後（也就是進到 client 瀏覽器時）啟動自動輪播
 onMounted(() => {
-  startCarouselAutoplay()
-})
+  startCarouselAutoplay();
+});
 
 // 在元件卸載前，清掉所有定時器
 onBeforeUnmount(() => {
-  stopCarouselAutoplay()
-  if (toastTimer) clearTimeout(toastTimer)
-})
+  stopCarouselAutoplay();
+  if (toastTimer) clearTimeout(toastTimer);
+});
 </script>
 
 <style scoped>
